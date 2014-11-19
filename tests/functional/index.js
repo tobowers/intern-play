@@ -1,13 +1,17 @@
 define([
     'intern!object',
-    'intern/dojo/node!leadfoot/helpers/pollUntil'
-], function (registerSuite, pollUntil) {
+    'intern/chai!assert'
+], function (registerSuite, assert) {
 
     registerSuite({
         'a test': function () {
             return this.remote
                 .get('http://github.com')
-                .then(pollUntil('return window.ready;', 5000));
+                .findByTagName('h1')
+                .getVisibleText()
+                .then(function (text) {
+                    assert.strictEqual(text, 'Build software better, together.');
+                });
         }
     });
 });
